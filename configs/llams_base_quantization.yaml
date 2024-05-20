@@ -15,7 +15,7 @@ checkpointer:
     meta_model_4.pt
   ]
   recipe_checkpoint: null
-  output_dir: checkpoints/Llama-3-LlaMS
+  output_dir: checkpoints/Llama-3-LlaMS-quantized
   model_type: LLAMA3
   
 device: cuda
