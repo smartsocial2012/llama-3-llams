@@ -1,0 +1,20 @@
+model:
+  _component_: torchtune.models.llama3.lora_llama3_8b
+
+checkpointer:
+  _component_: torchtune.utils.FullModelMetaCheckpointer
+
+  checkpoint_dir: checkpoints/Llama-3-LlaMS
+  checkpoint_files: [
+    meta_model_4.pt
+  ]
+
+  output_dir: checkpoints/Llama-3-LlaMS
+  model_type: LLAMA3
+
+tokenizer:
+  _component_: torchtune.models.llama3.llama3_tokenizer
+  path: checkpoints/Meta-Llama-3-8B/original/tokenizer.model
+
+device: cpu
+dtype: fp32
