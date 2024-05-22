@@ -9,11 +9,11 @@ model:
 
 checkpointer:
   _component_: torchtune.utils.FullModelMetaCheckpointer
-  checkpoint_dir: checkpoints/Llama-3-LLaMS
+  checkpoint_dir: checkpoints/Llama-3-LLaMS-Instruct
   checkpoint_files: [
     meta_model_4.pt
   ]
-  output_dir: checkpoints/Llama-3-LlaMS
+  output_dir: checkpoints/Llama-3-LlaMS-Instruct
   model_type: LLAMA3
 
 device: cuda
@@ -24,7 +24,7 @@ seed: 1234
 # Tokenizer arguments
 tokenizer:
   _component_: torchtune.models.llama3.llama3_tokenizer
-  path: checkpoints/Meta-Llama-3-8B/original/tokenizer.model
+  path: checkpoints/Meta-Llama-3-8B-Instruct/original/tokenizer.model
 
 # Generation arguments; defaults taken from gpt-fast
 prompt: "Below is an instruction that describes a task. Write a response that appropriately completes the request. ### Instruction: 세종대왕은 대신들 때문에 화가 나서 맥북을 던졌다. ### Response:"
