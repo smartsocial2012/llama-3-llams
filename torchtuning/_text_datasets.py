@@ -15,39 +15,6 @@ from torchtune.modules.tokenizers import Tokenizer
 from datasets import load_dataset
 from torch.utils.data import Dataset
 
-
-
-def koalpaca_dataset(
-    tokenizer: Tokenizer=llama3_tokenizer,
-    source: str="beomi/KoAlpaca-v1.1a",
-    template: InstructTemplate=AlpacaInstructTemplate,
-    train_on_input: bool=True,
-    max_seq_len: Optional[int]=2048,
-    split: str="train",
-):
-    '''
-    Build a KoAlpaca Dataset.
-
-    Args:
-        tokenizer (Tokenizer, optional): A Tokenizer which is used to encode or decode. Defaults to llama3_tokenizer.
-        source (str, optional): An url or a path of data source. Defaults to "beomi/KoAlpaca-v1.1a".
-        template (InstructTemplate, optional): A Template of instruction and output. Defaults to AlpacaInstructTemplate.
-        train_on_input (bool, optional): ... Defaults to True.
-        max_seq_len (Optional[int], optional): The length of max sequence. Defaults to 2048.
-        split (str, optional): ... Defaults to "train".
-
-    Returns:
-        _type_: _description_
-    '''
-    return InstructDataset(
-        tokenizer=tokenizer,
-        source=source,
-        template=template,
-        train_on_input=train_on_input,
-        max_seq_len=max_seq_len,
-        split=split,
-    )
-
 class TextCompletionDataset(Dataset):
     """
     Freeform dataset for any unstructured text corpus. Quickly load any dataset
@@ -87,17 +54,19 @@ class TextCompletionDataset(Dataset):
 
     def _prepare_sample(self, sample: Mapping[str, Any]) -> Dict[str, List[int]]:
         prompt = sample[self._column] if self._column is not None else sample
+        prompt = prompt if prompt is not None else ''
         tokens = self._tokenizer.encode(text=prompt, add_bos=True, add_eos=True)
 
         # Truncate if needed, but don't coerce EOS id
         if self.max_seq_len is not None:
-            tokens = truncate(tokens, self.max_seq_len - 1)
+            tokens = truncate(tokens, self.max_seq_len - 1, self._tokenizer.eos_id)
 
         # No need to offset labels by 1 - happens in the recipe
         labels = tokens.copy()
 
-        return {"tokens": tokens, "labels": labels}
+        assert len(tokens) == len(labels)
 
+        return tokens, labels
 
 def text_completion_dataset(
     tokenizer: Tokenizer,
@@ -151,9 +120,42 @@ def text_completion_dataset(
         max_seq_len=max_seq_len,
         **load_dataset_kwargs,
     )
-    
+
+def koalpaca_dataset(
+    tokenizer: Tokenizer,
+    source: str="beomi/KoAlpaca-v1.1a",
+    template: InstructTemplate=AlpacaInstructTemplate,
+    train_on_input: bool=True,
+    max_seq_len: Optional[int]=2048,
+    split: str="train",
+):
+    '''
+    Build a KoAlpaca Dataset.
+
+    Args:
+        tokenizer (Tokenizer, optional): A Tokenizer which is used to encode or decode. Defaults to llama3_tokenizer.
+        source (str, optional): An url or a path of data source. Defaults to "beomi/KoAlpaca-v1.1a".
+        template (InstructTemplate, optional): A Template of instruction and output. Defaults to AlpacaInstructTemplate.
+        train_on_input (bool, optional): ... Defaults to True.
+        max_seq_len (Optional[int], optional): The length of max sequence. Defaults to 2048.
+        split (str, optional): ... Defaults to "train".
+
+    Returns:
+        _type_: _description_
+    '''
+    return InstructDataset(
+        tokenizer=tokenizer,
+        source=source,
+        template=template,
+        train_on_input=train_on_input,
+        max_seq_len=max_seq_len,
+        split=split,
+    )
+
+
+
 def kowiki_dataset(
-    tokenizer=llama3_tokenizer,
+    tokenizer,
     source='csv',
     column='text',
     max_seq_len=2048,
