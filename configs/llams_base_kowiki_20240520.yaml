@@ -51,7 +51,7 @@ loss:
 
 # Training
 epochs: 10
-max_steps_per_epoch: null
+max_steps_per_epoch: 200
 gradient_accumulation_steps: 8
 compile: True
 
