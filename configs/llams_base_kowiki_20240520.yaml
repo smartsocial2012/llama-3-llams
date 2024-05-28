@@ -30,7 +30,7 @@ dataset:
   source: csv
   column: text
   data_files: data/20240520/kowikitext_20240520.csv
-  max_seq_len: 2048
+  max_seq_len: 1024
   split: train
 seed: 31344
 shuffle: True
