@@ -138,6 +138,7 @@ class InferenceRecipe:
         )
         logger.info(f"Bandwidth achieved: {model_size * tokens_sec / 1e9:.02f} GB/s")
         logger.info(f"Memory used: {torch.cuda.max_memory_allocated() / 1e9:.02f} GB")
+        return self._tokenizer.decode(generated_tokens)
 
 
 @config.parse
