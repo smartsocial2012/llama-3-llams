@@ -16,13 +16,14 @@ model:
 
 checkpointer:
   _component_: torchtune.utils.FullModelMetaCheckpointer
-  checkpoint_dir: checkpoints/Meta-Llama-3-8B/original/
+  checkpoint_dir: checkpoints/Llama-3-LLaMS-kowiki/
   checkpoint_files:
-  - consolidated.00.pth
-  recipe_checkpoint: null
+  - meta_model_1.pt
+  adapter_checkpoint: adapter_1.pt
+  recipe_checkpoint: recipe_state.pt
   output_dir: checkpoints/Llama-3-LLaMS-kowiki/
   model_type: LLAMA3
-resume_from_checkpoint: False
+resume_from_checkpoint: True
 
 # Dataset
 dataset:
