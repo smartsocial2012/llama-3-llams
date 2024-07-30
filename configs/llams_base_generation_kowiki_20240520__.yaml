@@ -9,11 +9,11 @@ model:
 
 checkpointer:
   _component_: torchtune.utils.FullModelMetaCheckpointer
-  checkpoint_dir: checkpoints/Llama-3-LLaMS-kowiki
+  checkpoint_dir: checkpoints/Meta-Llama-3-8B/original
   checkpoint_files: [
-    meta_model_0.pt
+    consolidated.00.pth
   ]
-  output_dir: checkpoints/Llama-3-LLaMS-kowiki
+  output_dir: checkpoints/Meta-Llama-3-8B/original
   model_type: LLAMA3
 
 device: cuda

@@ -30,6 +30,6 @@ tokenizer:
 prompt: "Below is an instruction that describes a task. Write a response that appropriately completes the request in the language of Instruction. ### Instruction: 세종대왕은 대신들 때문에 화가 나서 맥북을 던졌다. ### Response:"
 max_new_tokens: 300
 temperature: 0.6 # 0.8 and 0.6 are popular values to try
-top_k: 300
+top_k: 1
 
 quantizer: null
