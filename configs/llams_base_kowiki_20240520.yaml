@@ -18,8 +18,8 @@ checkpointer:
   _component_: torchtune.utils.FullModelMetaCheckpointer
   checkpoint_dir: checkpoints/Llama-3-LLaMS-kowiki/
   checkpoint_files:
-  - meta_model_2.pt
-  adapter_checkpoint: adapter_2.pt
+  - meta_model_4.pt
+  adapter_checkpoint: adapter_4.pt
   recipe_checkpoint: recipe_state.pt
   output_dir: checkpoints/Llama-3-LLaMS-kowiki/
   model_type: LLAMA3
