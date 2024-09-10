@@ -27,7 +27,7 @@ tokenizer:
   path: checkpoints/Meta-Llama-3-8B-Instruct/original/tokenizer.model
 
 # Generation arguments; defaults taken from gpt-fast
-prompt: "Below is an instruction that describes a task. Write a response that appropriately completes the request. ### Instruction: 세종대왕은 대신들 때문에 화가 나서 맥북을 던졌다. ### Response:"
+prompt: "플라톤에 대해서 알려줘."
 max_new_tokens: 300
 temperature: 0.6 # 0.8 and 0.6 are popular values to try
 top_k: 300
