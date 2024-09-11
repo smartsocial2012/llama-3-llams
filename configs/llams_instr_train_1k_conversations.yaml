@@ -1,0 +1,53 @@
+tokenizer:
+  _component_: torchtune.models.llama3.llama3_tokenizer
+  path: checkpoints/Meta-Llama-3-8B-Instruct/original/tokenizer.model
+
+model:
+  _component_: torchtune.models.llama3.lora_llama3_8b
+  apply_lora_to_mlp: false
+  apply_lora_to_output: false
+  lora_alpha: 16
+  lora_attn_modules:
+  - q_proj
+  - v_proj
+  lora_rank: 8
+
+checkpointer:
+  _component_: torchtune.utils.FullModelMetaCheckpointer
+  checkpoint_dir: checkpoints/Llama-3-LLaMS-inst-from-base/
+  checkpoint_files: [
+    meta_model_1.pt
+  ]
+  recipe_checkpoint: recipe_state.pt
+  model_type: LLAMA3
+  output_dir: checkpoints/Llama-3-LLaMS-inst-from-base/
+  recipe_checkpoint: null
+resume_from_checkpoint: True
+
+dataset:
+  _component_: torchtuning.custom_chat_dataset
+  train_on_input: true
+device: cuda
+dtype: bf16
+enable_activation_checkpointing: false
+epochs: 5
+batch_size: 1
+
+loss:
+  _component_: torch.nn.CrossEntropyLoss
+lr_scheduler:
+  _component_: torchtune.modules.get_cosine_schedule_with_warmup
+  num_warmup_steps: 100
+metric_logger:
+  _component_: torchtune.utils.metric_logging.DiskLogger
+  log_dir: /tmp/lora_finetune_output
+optimizer:
+  _component_: torch.optim.AdamW
+  lr: 0.0003
+  weight_decay: 0.01
+max_steps_per_epoch: null
+gradient_accumulation_steps: 32
+log_every_n_steps: 5
+output_dir: torchtune-llams
+seed: null
+shuffle: true
