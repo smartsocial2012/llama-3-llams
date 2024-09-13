@@ -12,4 +12,5 @@ pip install torchtune
 ```
 tune run --nproc_per_node 3 lora_finetune_distributed --config configs/llams_base.yaml
 tune run --nproc_per_node 3 lora_finetune_distributed --config configs/llams_instruct.yaml
+tune run --nproc_per_node 3 lora_finetune_distributed --config configs/llams_instr_train_1k_conversations.yaml
 ```

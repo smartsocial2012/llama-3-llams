@@ -19,18 +19,21 @@ checkpointer:
     meta_model_0.pt
   ]
   model_type: LLAMA3
-  output_dir: checkpoints/Llama-3-LLaMS-inst-from-base/
+  output_dir: checkpoints/Llama-3-LLaMS-inst-from-base/instrunction_template/
   # adapter_checkpoint: adapter_4.pt
   recipe_checkpoint: null # null if resume_from_checkpoint is False
 resume_from_checkpoint: False
 
 dataset:
-  _component_: torchtuning.custom_chat_dataset
+  _component_: torchtuning.custom_instruction_dataset
   source: csv
   data_files: data/inst_data_en_ko.csv
   split: train
   max_seq_len: 2048
   train_on_input: true
+  column_map: 
+    input: user
+    output: assistant
 device: cuda
 dtype: bf16
 enable_activation_checkpointing: false
