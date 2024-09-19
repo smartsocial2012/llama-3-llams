@@ -17,14 +17,14 @@ def custom_instruction_dataset(
         tokenizer=tokenizer,
         source=source,
         template=template,
-        transform=custom_transform,
+        # transform=custom_instruction_transform,
         train_on_input=train_on_input,
         max_seq_len=max_seq_len,
         split=split,
         **load_dataset_kwargs,
     )
 
-def custom_transform(
+def custom_instruction_transform(
     sample
 ):
     sample['instruction'] = """\
