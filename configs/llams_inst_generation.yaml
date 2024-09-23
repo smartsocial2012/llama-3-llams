@@ -19,7 +19,7 @@ checkpointer:
 device: cuda
 dtype: bf16
 
-seed: 1234
+seed: null
 
 # Tokenizer arguments
 tokenizer:
@@ -28,7 +28,7 @@ tokenizer:
 
 # Generation arguments; defaults taken from gpt-fast
 prompt: "플라톤에 대해서 알려줘."
-max_new_tokens: 300
+max_new_tokens: 2048
 temperature: 0.0 # 0.8 and 0.6 are popular values to try
 top_k: 300
 

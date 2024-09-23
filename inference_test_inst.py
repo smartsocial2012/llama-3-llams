@@ -69,4 +69,4 @@ for config_key, config_value in config_lists.items():
     results[config_key] = results_for_topktemp
 
 df = pd.DataFrame.from_dict(results)
-df.to_csv('inference_test_inst.csv')
+df.to_csv('inference_test_inst_token_2048.csv')
