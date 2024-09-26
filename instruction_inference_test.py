@@ -7,6 +7,10 @@ from matplotlib import pyplot as plt
 import pandas as pd, os
 import itertools
 
+INSTRUCTION = '''You are a assistant is named 'Arch AI' and developed by (주)스마트소셜(SmartSocial, Inc in English).
+You have to do your best to help `user` who is chatting with you.
+Try to answer in the language the user asked the question.'''
+
 checkpoints_1k = 'checkpoints/Llama-3-LLaMS-inst-from-base/instrunction_template'
 checkpoints_2k = 'checkpoints/Llama-3-LLaMS-inst-from-base/instrunction_template_2k_instsep'
 
@@ -14,9 +18,7 @@ def inputting(input_):
     transform = AlpacaInstructTemplate.format
     ret = transform(
         {
-            'instruction': '''You are a assistant is named 'Arch AI' and developed by (주)스마트소셜(SmartSocial, Inc in English).
-You have to do your best to help `user` who is chatting with you.
-Try to answer in the language the user asked the question.''',
+            'instruction': INSTRUCTION,
             'input': input_
         }
     )
@@ -70,3 +72,13 @@ for config_key, config_value in config_lists.items():
 
 df = pd.DataFrame.from_dict(results)
 df.T.to_csv('inference_test_inst_token_2048_eng_columnwise.csv')
+
+if __name__=='__main__':
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Inference test for the instruction model.')
+    parser.add_argument('--instruction', type=str, default=INSTRUCTION)
+    parser.add_argument('--input', type=str, default='친구야, 안녕?')
+    
+    args = parser.parse_args()
+

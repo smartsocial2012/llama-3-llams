@@ -10,3 +10,4 @@ media/**
 checkpoints/**
 data
 .hypothesis
+multi-finetune.sh
