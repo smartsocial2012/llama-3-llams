@@ -28,8 +28,8 @@ resume_from_checkpoint: False
 
 dataset:
   _component_: torchtuning.custom_chat_dataset
-  source: csv
-  data_files: data/inst_data_en_ko_4k.csv
+  source: json
+  data_files: data/inst_data_en_ko_4k.json
   split: train
   max_seq_len: 2048
   train_on_input: true

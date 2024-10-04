@@ -20,8 +20,8 @@ if __name__=='__main__':
     import argparse
     
     parser = argparse.ArgumentParser(description=DESCRIPTION)
-    parser.add_argument('--from_csv', metavar='FROM_CSV', type=str, default='../kosimcse_ncs/data/inst_data.json')
-    parser.add_argument('--to_csv', metavar='TO_CSV', type=str, default='data/inst_data_en_ko.csv')
+    parser.add_argument('--from_csv', metavar='FROM_CSV', type=str, default='../kosimcse_ncs/data/cleaned_inst_data_4k.json')
+    parser.add_argument('--to_csv', metavar='TO_CSV', type=str, default='data/inst_data_en_ko_4k.json')
     
     args = parser.parse_args()
 
@@ -31,28 +31,31 @@ if __name__=='__main__':
     aa = []
     for x in a:
         try:
-            aa.append({
-                'instruction': INST_SAME_LANG,
-                'user': x['eng'][0]['content'], 
-                'assistant': x['eng'][1]['content']
-            })
-            aa.append({
-                'instruction': INST_SAME_LANG,
-                'user': x['kor'][0]['content'], 
-                'assistant': x['kor'][1]['content']
-            })
-            aa.append({
-                'instruction': INST_TO_KOR,
-                'user': x['eng'][0]['content'], 
-                'assistant': x['kor'][1]['content']
-            })
-            aa.append({
-                'instruction': INST_TO_ENG,
-                'user': x['kor'][0]['content'], 
-                'assistant': x['eng'][1]['content']
-            })
+            aaa = []
+            for inst, user_lang, assi_lang in [
+                (INST_SAME_LANG, 'eng', 'eng'),
+                (INST_SAME_LANG, 'kor', 'kor'),
+                (INST_TO_KOR, 'eng', 'kor'),
+                (INST_TO_ENG, 'kor', 'eng'),
+            ]:
+                aaaa = []
+                aaaa.append({
+                    'from': 'instruction',
+                    'value': inst
+                })
+                for idx in range(len(x[user_lang])):
+                    target_lang = user_lang if idx % 2 == 0 else assi_lang
+                    aaaa.append({
+                        'from': x[target_lang][idx]['role'],
+                        'value': x[target_lang][idx]['content']
+                    })
+                
+                aaa.append(aaaa)
+            aa.extend(aaa)
         except:
             print(x)
+            print(len(x['eng']), len(x['kor']))
 
-    df = pd.DataFrame(aa)
-    df.to_csv(args.to_csv)
+    with open(args.to_csv, 'w') as f:
+        for i, x in enumerate(aa):
+            f.write(json.dumps({"conversation": x}) + '\n')

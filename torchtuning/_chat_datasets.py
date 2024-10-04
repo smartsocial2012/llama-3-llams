@@ -96,32 +96,32 @@ class CustomChatDataset(Dataset):
 chat_format = CustomChatFormat()
 
 def _converter(sample: Mapping[str, Any], train_on_input: bool=False) -> List[Message]:
-    system_msg = sample.get('instruction', '')
-    text_msgs = [sample['user'], sample['assistant']]
+    first_key = next(iter(sample.keys()))
+    sample = sample[first_key]
+    # system_msg = sample.get('instruction', '')
+    # text_msgs = [sample['user'], sample['assistant']]
     
     is_user = True
+    msgs = []
+    
     # Multi-turn dataset
-    if system_msg:
-        msgs = [
-            Message(
-                role="system",
-                content=system_msg,
-                masked=True, # Mask if not training on prompt
+    for msg in sample:
+        if msg['from'] == 'instruction':
+            msgs.append(
+                Message(
+                    role="system",
+                    content=msg['value'],
+                    masked=True, # Mask if not training on prompt
+                )
             )
-        ]
-    else:
-        msgs = []
-        
-    for m in text_msgs:
-        msgs.append(
-            Message(
-                role="user" if is_user else "assistant",
-                content=m,
-                masked=is_user,
+        else:
+            msgs.append(
+                Message(
+                    role=msg['from'],
+                    content=msg['value'],
+                    masked=True if msg['from']=='user' else False, # Mask if not training on prompt
+                )
             )
-        )
-        is_user = not is_user
-
     return msgs
 
 def custom_chat_dataset(
