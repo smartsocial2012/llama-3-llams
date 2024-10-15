@@ -31,7 +31,7 @@ dataset:
   source: json
   data_files: data/inst_data_en_ko_4k.json
   split: train
-  max_seq_len: 2048
+  max_seq_len: 1536
   train_on_input: true
 device: cuda
 dtype: bf16
